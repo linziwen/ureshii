@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pano", "pano\pano.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testPano", "testPano\testPano.vcxproj", "{BC076E0F-D42B-430B-A105-8070D87D1160}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "panorama", "panorama\panorama.vcxproj", "{0FBF1679-95AA-4A80-A2F5-20FF005E4B41}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -23,6 +25,10 @@ Global
 		{BC076E0F-D42B-430B-A105-8070D87D1160}.Debug|Win32.Build.0 = Debug|Win32
 		{BC076E0F-D42B-430B-A105-8070D87D1160}.Release|Win32.ActiveCfg = Release|Win32
 		{BC076E0F-D42B-430B-A105-8070D87D1160}.Release|Win32.Build.0 = Release|Win32
+		{0FBF1679-95AA-4A80-A2F5-20FF005E4B41}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0FBF1679-95AA-4A80-A2F5-20FF005E4B41}.Debug|Win32.Build.0 = Debug|Win32
+		{0FBF1679-95AA-4A80-A2F5-20FF005E4B41}.Release|Win32.ActiveCfg = Release|Win32
+		{0FBF1679-95AA-4A80-A2F5-20FF005E4B41}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
