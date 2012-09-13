@@ -17,7 +17,7 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-
+namespace Pano{
 C44Matrix::C44Matrix()
 {
 	//元素全部初始化为0
@@ -281,4 +281,6 @@ BOOL C44Matrix::Uni()
 		for(j=0;j<4;j++)
 			m_aData[i][j] = m_aData[i][j]/aLen[i];
 	return TRUE;
+}
+
 }

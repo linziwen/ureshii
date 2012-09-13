@@ -10,6 +10,7 @@
 #endif // _MSC_VER > 1000
 
 #include <Windows.h>
+namespace Pano{
 class C44Matrix  
 {
 public:
@@ -29,5 +30,5 @@ public:
 	BOOL Uni(); //µ¥Î»»¯
 
 };
-
+}
 #endif // !defined(AFX_44MATRIX_H__BC38206E_C3B3_450F_8CEB_97117E4A39D0__INCLUDED_)

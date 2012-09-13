@@ -11,6 +11,8 @@
 #include <math.h>
 #include <cv.h>
 
+using Pano::C44Matrix;
+
 namespace Pano{
 	class Util
 	{
