@@ -2,7 +2,7 @@
 
 #include "Util.h"
 #include "highgui.h"
-
+#include "panorama.h"
 using std::vector;
 using std::cout;
 using std::endl;

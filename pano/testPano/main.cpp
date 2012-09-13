@@ -1,6 +1,7 @@
 #include "../pano/panorama.h"
+#include <iostream>
 
-int main(){
+int oldmain(){
 
 	//Sleep(2000);
 	//WaitForSingleObject(hMutex,INFINITE);
@@ -87,6 +88,11 @@ int main(){
 	//	,"./sphere/pano1.jpg"
 	//	,500);
 	return 1;
+}
+
+int main(){
+	std::cout<<"hello"<<std::endl;
+	return 0;
 }
 
 
