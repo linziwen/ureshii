@@ -1,5 +1,11 @@
 #include "../pano/panorama.h"
 #include <iostream>
+#include <opencv2/core/core.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <string>
+
+using std::string;
 
 int oldmain(){
 
@@ -90,9 +96,25 @@ int oldmain(){
 	return 1;
 }
 
+void testLoadImage(){
+	string winName = "mywin";
+	cvNamedWindow(winName.c_str(), 0);
+	IplImage *img = cvLoadImage("front.jpg");
+	cvShowImage(winName.c_str(),img);
+	while(1){
+		if(cvWaitKey(100) == 27){
+			break;
+		}
+	}
+	cvDestroyWindow(winName.c_str());
+	cvReleaseImage(&img);
+}
+
 int main(){
 	std::cout<<"hello"<<std::endl;
+	testLoadImage();
 	return 0;
 }
+
 
 
