@@ -1,8 +1,9 @@
 #define DLL_API extern "C" __declspec(dllexport)
 
 #include "Util.h"
-#include "highgui.h"
+#include "opencv2\highgui\highgui.hpp"
 #include "panorama.h"
+#include <iostream>
 using std::vector;
 using std::cout;
 using std::endl;
