@@ -1,4 +1,4 @@
-#define DLL_API extern "C" __declspec(dllexport)
+#include "DllControl.h"
 
 #include "Util.h"
 #include "opencv2\highgui\highgui.hpp"
