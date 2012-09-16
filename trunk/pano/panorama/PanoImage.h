@@ -2,6 +2,11 @@
 #define PANO_PANOIMAGE_INCLUDE_H_
 #pragma once
 
+#ifdef DLL_CLASS 
+#else 
+#define DLL_CLASS __declspec(dllimport)
+#endif 
+
 #include "opencv2/core/core.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include <string>
@@ -9,11 +14,14 @@ using std::string;
 
 namespace Pano{
 
-class PanoImage
+class DLL_CLASS  PanoImage
 {
 public:
 	PanoImage(void);
 	~PanoImage(void);
+
+public:
+	void hello();
 
 private:
 	string imgName;

@@ -4,8 +4,12 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <string>
-
+#include "PanoImage.h"
+#include "Logger.h"
+using Pano::PanoImage;
+using Pano::Logger;
 using std::string;
+
 
 int oldmain(){
 
@@ -98,8 +102,9 @@ int oldmain(){
 
 void testLoadImage(){
 	string winName = "mywin";
+	string imgName = "../back.jpg";
 	cvNamedWindow(winName.c_str(), 0);
-	IplImage *img = cvLoadImage("front.jpg");
+	IplImage *img = cvLoadImage(imgName.c_str());
 	cvShowImage(winName.c_str(),img);
 	while(1){
 		if(cvWaitKey(100) == 27){
@@ -110,9 +115,23 @@ void testLoadImage(){
 	cvReleaseImage(&img);
 }
 
+void testPanoImage(){
+	string imgName = "front.jpg";
+	PanoImage img;
+	img.hello();
+}
+
+void testLogger(){
+	
+	LOG_ERROR("test error");
+	LOG_INFO("test info");
+}
+
 int main(){
 	std::cout<<"hello"<<std::endl;
-	testLoadImage();
+	//testLoadImage();
+	testLogger();
+	//testPanoImage();
 	return 0;
 }
 
