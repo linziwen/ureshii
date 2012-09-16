@@ -78,11 +78,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="44Matrix.h" />
+    <ClInclude Include="PanoImage.h" />
     <ClInclude Include="panorama.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="44Matrix.cpp" />
+    <ClCompile Include="PanoImage.cpp" />
     <ClCompile Include="panorama.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
