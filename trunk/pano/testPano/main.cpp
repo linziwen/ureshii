@@ -116,8 +116,8 @@ void testLoadImage(){
 }
 
 void testPanoImage(){
-	string imgName = "front.jpg";
-	PanoImage img;
+	string imgName = "D:\\myfile\\vsprogram\\pano\\back.jpg";
+	PanoImage img(imgName);
 	img.hello();
 }
 
@@ -130,8 +130,8 @@ void testLogger(){
 int main(){
 	std::cout<<"hello"<<std::endl;
 	//testLoadImage();
-	testLogger();
-	//testPanoImage();
+	//testLogger();
+	testPanoImage();
 	return 0;
 }
 
