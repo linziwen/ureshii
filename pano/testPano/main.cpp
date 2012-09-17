@@ -118,7 +118,6 @@ void testLoadImage(){
 void testPanoImage(){
 	string imgName = "D:\\myfile\\vsprogram\\pano\\back.jpg";
 	PanoImage img(imgName);
-	img.hello();
 }
 
 void testLogger(){
