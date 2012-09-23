@@ -120,4 +120,17 @@ double Util::SoluteEquation( double **ppMatrix,int nUpBnd1,int nUpBnd2 )
 	return dDet;
 }
 
+
+cv::Point3f Util::matXpoint(C44Matrix mat, cv::Point3f point){
+	C44Matrix resultMax;
+	C44Matrix pointMax;
+	pointMax.m_aData[0][0] = point.x;
+	pointMax.m_aData[1][0] = point.y;
+	pointMax.m_aData[2][0] = point.z;
+	pointMax.m_aData[3][0] = 1;
+	resultMax = mat*pointMax;
+	return cv::Point3f(resultMax[0][0], resultMax[1][0], resultMax[2][0]);
+
+}
+
 }
