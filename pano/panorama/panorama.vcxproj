@@ -80,6 +80,7 @@
     <ClInclude Include="44Matrix.h" />
     <ClInclude Include="DllControl.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="PanoAsso.h" />
     <ClInclude Include="PanoImage.h" />
     <ClInclude Include="panorama.h" />
     <ClInclude Include="Util.h" />
@@ -87,6 +88,7 @@
   <ItemGroup>
     <ClCompile Include="44Matrix.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="PanoAsso.cpp" />
     <ClCompile Include="PanoImage.cpp" />
     <ClCompile Include="panorama.cpp" />
     <ClCompile Include="Util.cpp" />

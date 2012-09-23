@@ -64,20 +64,20 @@ int oldmain(){
 	int pNum=2;
 	char *dest="panod.jpg";
 	int width=1000;
-	struct TPatchPntInfo pPatPtInfo[3]={
+	struct TPatchPntInfo pPatPtInfo[6]={
 		//TPatchPntInfo(1,2,1230,478,285,492),     //1   //这个不知为何加入了会死
 		TPatchPntInfo(1,2,247,504,1242,490),       //2
 		TPatchPntInfo(1,2,92,1003,1461,995),        //3
 		//TPatchPntInfo(1,2,1359,1329,175,1331),    //4
 		TPatchPntInfo(1,2,227,1440,1271,1414),     //5
 		//TPatchPntInfo(2,1,1220,478,286,481),      //6
-		//TPatchPntInfo(2,1,1390,736,108,740),        //7
-		//TPatchPntInfo(2,1,1434,940,67,950),         //8
-		//TPatchPntInfo(2,1,1331,1331,165,1358)  ,   //9
+		TPatchPntInfo(2,1,1390,736,108,740),        //7
+		TPatchPntInfo(2,1,1434,940,67,950),         //8
+		TPatchPntInfo(2,1,1331,1331,165,1358)  ,   //9
 		//TPatchPntInfo(2,1,1407,1172,99,1185)        //10
 	};
 
-	int ptNum=3;
+	int ptNum=6;
 
 	GenPano(imgName,pNum,dest,width,pPatPtInfo,ptNum);
 	//GenCubeFromSphere("pano.jpg", "pre" ,1000);
@@ -117,7 +117,16 @@ void testLoadImage(){
 
 void testPanoImage(){
 	string imgName = "D:\\myfile\\vsprogram\\pano\\back.jpg";
-	PanoImage img(imgName);
+	PanoImage img(imgName,500.0);
+	string winName = "mywin";
+	cv::namedWindow("hello",0);
+	cv::imshow("hello",img.getImage());
+	cv::resizeWindow("hello",1024,768);
+	while(1){
+		if(cvWaitKey(100) == 27){
+			break;
+		}
+	}
 }
 
 void testLogger(){
@@ -130,7 +139,8 @@ int main(){
 	std::cout<<"hello"<<std::endl;
 	//testLoadImage();
 	//testLogger();
-	testPanoImage();
+	//testPanoImage();
+	oldmain();
 	return 0;
 }
 

@@ -11,6 +11,12 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
+#include <map>
+
+using std::vector;
+using std::map;
+
 namespace Pano{
 
 
