@@ -131,4 +131,19 @@ void PanoAsso::calMatA()
 	mat.Uni();
 	this->matA = mat;
 }
+
+const cv::Point3f PanoAsso::getSpherePos() const
+{
+	return this->spherePos;
+}
+
+void PanoAsso::setSpherePos( const cv::Point3f val )
+{
+	this->spherePos = val;
+}
+
+const C44Matrix PanoAsso::getMatA() const
+{
+	return this->matA;
+}
 }

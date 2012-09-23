@@ -41,11 +41,16 @@ public:
 
 	void calMatA();
 
+	const cv::Point3f getSpherePos() const;
+	void setSpherePos(const cv::Point3f val);
+
+	const C44Matrix getMatA() const;
 private:
 	vector<TPatchPntInfo> patchPnts;
 	PanoImage *img1Id;
 	PanoImage *img2Id;
 	C44Matrix matA;
+	cv::Point3f spherePos;
 
 };
 

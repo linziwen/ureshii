@@ -84,15 +84,50 @@ struct TPatchPntInfo * pPatPtInfo, //∆•≈‰µ„ºØ
 		stringstream ss;
 		ss << "rows=" << rows << "  cols=" << outImg.cols << " channels=" << outImg.channels();
 		LOG_INFO(ss.str());
+		ss.str("");
 		for (int y = 0; y < outImg.rows; ++y)
 		{
 			uchar *ptr = outImg.ptr<uchar>(y);
 			for(int x = 0; x<cols; ++x){
-				//ss.str("");
-				//ss << "i=" << i << "  j=" << j;
-				ptr[x*3] = 0;
-				ptr[x*3 + 1] = 0;
-				ptr[x*3 + 2] = 255;
+				double theta = x*(2*PI/cols);//theta(0,2PI)
+				double phi = (rows/2-y)*(PI/rows);//phi(-2/PI, 2/PI)
+				double xp,yp,zp;
+				xp = cos(theta)*cos(phi);
+				yp = sin(theta)*cos(phi);
+				zp = sin(phi);
+
+				vector<CvPoint3D32f> points;
+				C44Matrix matXp,matX1,matRecB;
+				double dDet;
+
+				matRecB = matB;
+				dDet = matRecB.Rec();
+				matRecB.Uni();
+				if (dDet == 0)
+				{
+					LOG_INFO("matB can not be inversed");
+					return -1;
+				}
+
+				LOG_INFO("cal fisheye 3d pos respectively");
+				imgAssos[1].setSpherePos(Util::matXpoint(matRecB, cv::Point3f(xp, yp, zp)));
+				for(int k = 0; k < nPicNum - 1; ++k){
+					imgAssos[k+2].setSpherePos(Util::matXpoint(imgAssos[k+1].getMatA() , imgAssos[k+1].getSpherePos()));
+				}
+				for(int k = 0; k < nPicNum - 1; ++k){
+					cv::Point3f point = imgAssos[k+1].getSpherePos();
+					double theta1 = atan2(point.y, point.x);
+					double phi1 = atan2(point.z, sqrt(pow(point.x,2) + pow(point.y, 2)));
+					if (theta1<0)
+					{
+						theta1 += 2*PI;
+					}
+
+
+				}
+				//ptr[x*3] = 0;
+				//ptr[x*3 + 1] = 0;
+				//ptr[x*3 + 2] = 255;
 				//LOG_INFO(ss.str());
 			}
 		}

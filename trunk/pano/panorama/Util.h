@@ -38,6 +38,8 @@ namespace Pano{
 			static double SoluteEquation(double **ppMatrix,int nUpBnd1,int nUpBnd2);
 
 			static void findImageRadiusAndCenter( const IplImage *img ,int &radius,CvPoint &center);
+
+			static cv::Point3f matXpoint(C44Matrix mat, cv::Point3f point);
 		public:
 
 	};
