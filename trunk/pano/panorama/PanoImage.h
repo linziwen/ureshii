@@ -18,7 +18,7 @@ namespace Pano{
 class DLL_CLASS  PanoImage
 {
 public:
-	explicit PanoImage(string pathAndName);
+	explicit PanoImage(string pathAndName, float radiu);
 	~PanoImage(void);
 
 public:
@@ -32,9 +32,17 @@ public:
 
 	const cv::Mat getImage() const;
 	void setImage(const cv::Mat val);
+
+	const float getRadiu() const;
+	void setRadiu(const float );
+
+	const cv::Point2f getCenter() const;
+	void setCenter(const cv::Point2f val);
+
 private:
 	void assignCenterAndRadiu();
 	void loadImage();
+	void resizeImgToSquare();
 	void seperatePathAndName(string pathAndName);
 
 private:

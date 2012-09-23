@@ -2,12 +2,20 @@
 
 #include "Util.h"
 #include "opencv2\highgui\highgui.hpp"
-#include "panorama.h"
+#include "Logger.h"
+#include "PanoImage.h"
 #include <iostream>
+#include <map>
+#include "PanoAsso.h"
 using std::vector;
 using std::cout;
 using std::endl;
 using Pano::Util;
+using Pano::PanoImage;
+using Pano::Logger;
+using std::map;
+using Pano::PanoAsso;
+using std::stringstream;
 
 int GenPano(char* aSrcPics[], //2个或多个鱼眼源图像文件名(带路径)
 			int nPicNum,    //源图像的个数
@@ -19,8 +27,82 @@ struct TPatchPntInfo * pPatPtInfo, //匹配点集
 	int nRadius,  //鱼眼图像圆的半径-1则是不给定又程序检测，上同
 	bool bDisplay){
 
+		LOG_INFO("preparing images");
+		map<int, PanoImage *> images;
+		map<int, PanoAsso> imgAssos;
+
+		for(int i = 0; i<nPicNum; ++i){
+			PanoImage * pImg = NULL;
+			if (nCenterPixX != -1 && nCenterPixY != -1)
+			{
+				cv::Point2f center(nCenterPixX,nCenterPixY);
+				pImg->setCenter(center);
+			}
+			if (nRadius != -1)
+			{
+				pImg = new PanoImage(aSrcPics[i], nRadius);
+			}else{
+				pImg = new PanoImage(aSrcPics[i], nDestWidth/4);
+			}
+			images[i+1] = pImg;
+		}
+		for(int i = 0; i<nPicNum; ++i){
+			PanoAsso pa;
+			pa.setImg1Id(images[i+1]);
+			if(i+1 == nPicNum){
+				pa.setImg2Id(images[1]);
+			}else{
+				pa.setImg2Id(images[i+2]);
+			}
+			for (int j = 0; j < 3; ++j)
+			{
+				//int a = pPatPtInfo[i*3+j].nPic1;
+				pa.addPatchPoint(pPatPtInfo[i*3+j]);
+			}
+			pa.calMatA();
+			imgAssos[i + 1] = pa;
+		}
+
+		LOG_INFO("cal matB");
+		C44Matrix matB;
+		matB.m_aData[0][0]=1;
+		matB.m_aData[1][1]=cos(PI/2);
+		matB.m_aData[1][2]=-sin(PI/2);
+		matB.m_aData[2][1]=sin(PI/2);
+		matB.m_aData[2][2]=cos(PI/2);
+		matB.m_aData[3][3] = 1;
+		matB.Uni();
+		cout<<"finished cal the matrix A and B"<<endl;
+
+		cv::Size outSize(nDestWidth, nDestWidth/2);
+		cv::Mat outImg(outSize,CV_8UC3);
 
 
+		int rows = outImg.rows;
+		int cols = outImg.cols;
+
+		stringstream ss;
+		ss << "rows=" << rows << "  cols=" << outImg.cols << " channels=" << outImg.channels();
+		LOG_INFO(ss.str());
+		for (int y = 0; y < outImg.rows; ++y)
+		{
+			uchar *ptr = outImg.ptr<uchar>(y);
+			for(int x = 0; x<cols; ++x){
+				//ss.str("");
+				//ss << "i=" << i << "  j=" << j;
+				ptr[x*3] = 0;
+				ptr[x*3 + 1] = 0;
+				ptr[x*3 + 2] = 255;
+				//LOG_INFO(ss.str());
+			}
+		}
+
+		cv::imwrite("out.jpg",outImg);
+		LOG_INFO("release phase");
+		for(int i = 0; i<nPicNum; ++i){
+			images[i+1] = NULL;
+			delete images[i+1];
+		}
 		return 0;
 }
 
