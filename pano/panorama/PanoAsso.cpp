@@ -78,6 +78,7 @@ void PanoAsso::calMatA()
 		double r2 = sqrt(pow(double(it->y2),2)+pow(double(it->x2),2));
 
 		double r0 = (r1+r2)/2;
+		this->setR0(r0);
 		double phi1 = PI/2*(1-r1/r0);
 		double phi2 = PI/2*(1-r2/r0);
 
@@ -145,5 +146,15 @@ void PanoAsso::setSpherePos( const cv::Point3f val )
 const C44Matrix PanoAsso::getMatA() const
 {
 	return this->matA;
+}
+
+const double PanoAsso::getR0() const
+{
+	return this->r0;
+}
+
+void PanoAsso::setR0( const double r0 )
+{
+	this->r0 = r0;
 }
 }

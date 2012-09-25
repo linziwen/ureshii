@@ -85,6 +85,7 @@ struct TPatchPntInfo * pPatPtInfo, //匹配点集
 		ss << "rows=" << rows << "  cols=" << outImg.cols << " channels=" << outImg.channels();
 		LOG_INFO(ss.str());
 		ss.str("");
+		double rmax, rmin, rsphere;
 		for (int y = 0; y < outImg.rows; ++y)
 		{
 			uchar *ptr = outImg.ptr<uchar>(y);
@@ -109,7 +110,7 @@ struct TPatchPntInfo * pPatPtInfo, //匹配点集
 					return -1;
 				}
 
-				LOG_INFO("cal fisheye 3d pos respectively");
+				//LOG_INFO("cal fisheye 3d pos respectively");
 				imgAssos[1].setSpherePos(Util::matXpoint(matRecB, cv::Point3f(xp, yp, zp)));
 				for(int k = 0; k < nPicNum - 1; ++k){
 					imgAssos[k+2].setSpherePos(Util::matXpoint(imgAssos[k+1].getMatA() , imgAssos[k+1].getSpherePos()));
@@ -122,6 +123,93 @@ struct TPatchPntInfo * pPatPtInfo, //匹配点集
 					{
 						theta1 += 2*PI;
 					}
+					double r1 = imgAssos[k+1].getR0()*(PI/2-phi1)/(PI/2);
+					double rx,rxabs,ry,ryabs;
+					rx = r1*cos(theta1);
+					ry = r1*sin(theta1);
+
+					
+					rmax = imgAssos[k+1].getImg1Id()->getRadiu();
+					rsphere = rmax*180/183;
+					rmin = 2*rsphere - rmax;
+					if(r1 < rmin){
+						double xi,yi;//image coord which the original point is in the center of the image
+						int xcv,ycv;//image coord which the original point is in the left top of the image
+						xi = r1*cos(theta1);
+						yi = r1*sin(theta1);
+						xcv = int(xi + rmax);
+						ycv = int((-yi) + rmax);
+						if (ycv<0)
+						{
+							ycv=0;
+						}
+						
+						//uchar* pixelColor = &((uchar*)(plImageVec[n]->imageData + plImageVec[n]->widthStep*ycv))[xcv*3];
+						ptr[x*3] = imgAssos[k+1].getImg1Id()->getImage().at<cv::Vec3b>(ycv,xcv)[0];
+						ptr[x*3+1] = imgAssos[k+1].getImg1Id()->getImage().at<cv::Vec3b>(ycv,xcv)[1];
+						ptr[x*3+2] = imgAssos[k+1].getImg1Id()->getImage().at<cv::Vec3b>(ycv,xcv)[2];
+
+						break;
+					}else if (r1>rmin && r1<=rmax && rx>=0){
+						int n = k+2;
+						if (n > nPicNum)
+						{
+							n=1;
+						}
+						cv::Point3f point = imgAssos[n].getSpherePos();
+						double theta2, phi2, r2;
+						phi2 = atan2(point.z, sqrt(pow(point.x,2) + pow(point.y, 2)));
+						theta2 = atan2(point.y, point.x);
+						if (theta2<0)
+						{
+							theta2 += 2*PI;
+						}
+						r2 = imgAssos[k+1].getR0()*(PI/2-phi2)/(PI/2);
+						float p2ex = rmax*cos(theta2);
+						float p2ey = rmax*sin(theta2);
+						CvPoint2D32f p2e = cvPoint2D32f(p2ex,p2ey);
+						CvPoint2D32f p2e1,p1,p1e;
+						C44Matrix transmat = matVecA[firstPic-1];//TODO:problem
+						transmat.Rec();
+						transmat.Uni();
+						findCounterpartPt(p2e,transmat,rmax,r180,p2e1);
+						p1.x = float(r1*cos(theta1));
+						p1.y = float(r1*sin(theta1));
+						p1e.x = float(rmax*cos(theta1));
+						p1e.y = float(rmax*sin(theta1));
+
+						double dist1,distAll,k1,k2;
+						dist1 = sqrt((p1.x-p1e.x)*(p1.x-p1e.x)+(p1.y-p1e.y)*(p1.y-p1e.y));
+						distAll = sqrt((p1e.x-p2e1.x)*(p1e.x-p2e1.x)+(p1e.y-p2e1.y)*(p1e.y-p2e1.y));
+						k1 = dist1/distAll;
+						k2 = 1-k1;
+
+						double xi1,yi1,xi2,yi2;
+						int xcv1,ycv1,xcv2,ycv2;
+						xi1 = r1*cos(theta1);
+						yi1 = r1*sin(theta1);
+						xcv1 = int(xi1 + nCenterPixX);
+						ycv1 = int((-yi1) + nCenterPixY);
+						xi2 = r2*cos(theta2);
+						yi2 = r2*sin(theta2);
+						xcv2 = int(xi2 + nCenterPixX);
+						ycv2 = int((-yi2) + nCenterPixY);
+
+
+
+						uchar* pixelColor1 = &((uchar*)(plImageVec[pPatPtInfo[ptnum].nPic1-1]->imageData + plImageVec[pPatPtInfo[ptnum].nPic1-1]->widthStep*ycv1))[xcv1*3];
+						uchar* pixelColor2 = &((uchar*)(plImageVec[pPatPtInfo[ptnum].nPic2-1]->imageData + plImageVec[pPatPtInfo[ptnum].nPic2-1]->widthStep*ycv2))[xcv2*3];
+
+						if (k1>1)
+						{
+							k1=1;
+							k2=0;
+						}
+						ptr[x*3] = pixelColor1[0]*k1+pixelColor2[0]*k2;
+						ptr[x*3+1] = pixelColor1[1]*k1+pixelColor2[1]*k2;
+						ptr[x*3+2] = pixelColor1[2]*k1+pixelColor2[2]*k2;
+						break;
+					}
 
 
 				}
@@ -131,8 +219,10 @@ struct TPatchPntInfo * pPatPtInfo, //匹配点集
 				//LOG_INFO(ss.str());
 			}
 		}
-
-		cv::imwrite("out.jpg",outImg);
+		ss.str("");
+		ss << "rmax=" << rmax << "  rmin=" << rmin << " rspere=" << rsphere;
+		LOG_INFO(ss.str());
+		cv::imwrite(sDestPic,outImg);
 		LOG_INFO("release phase");
 		for(int i = 0; i<nPicNum; ++i){
 			images[i+1] = NULL;
