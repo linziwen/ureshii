@@ -1,3 +1,40 @@
 http://www.videosky.com/show.php?contentid=7965
 http://download.csdn.net/tag/%E5%85%A8%E6%99%AF%E8%A7%86%E8%A7%89%EF%BC%8C%E9%B1%BC%E7%9C%BC%E9%95%9C%E5%A4%B4%EF%BC%8C%E7%95%B8%E5%8F%98%E6%A0%A1%E6%AD%A3%EF%BC%8C%E6%8B%BC%E6%8E%A5
 http://wenku.baidu.com/view/511f3a1e10a6f524ccbf85fe.html
+http://www.douban.com/group/topic/9943657/
+http://www.ogre3d.org/forums/viewtopic.php?f=21&t=72461
+
+	private void copyDeviceAsso(LogicObjectFsuTO logicObjectFsu) {
+		List<SyncDeviceAssoPO> synDeviceAssos =
+				synDeviceAssoDao.getchildEnergyDevice(logicObjectFsu.getFsuId(), logicObjectFsu.getObjectIdFsu());
+		for (SyncDeviceAssoPO synDeviceAsso : synDeviceAssos) {
+			LogicObjectFsuTO child =
+					findByFsuLogcalObjectID(logicObjectFsu.getFsuId(), synDeviceAsso.getSyncDeviceAssoPOPK()
+							.getAssoDeviceId());
+			if (child != null) {
+				try {
+					DeviceAssoTO deviceAsso =
+							new DeviceAssoTO(logicObjectFsu.getLogicObjectId(), child.getLogicObjectId());
+					deviceAssoService.createDeviceAsso(deviceAsso);
+				} catch (Exception e) {
+				}
+			}
+		}
+
+		List<SyncDeviceAssoPO> parDeviceAssos =
+				synDeviceAssoDao.getParEnergyDevice(logicObjectFsu.getFsuId(), logicObjectFsu.getObjectIdFsu());
+		for (SyncDeviceAssoPO synDeviceAsso : parDeviceAssos) {
+			LogicObjectFsuTO parLogicObjectFsu =
+					findByFsuLogcalObjectID(logicObjectFsu.getFsuId(), synDeviceAsso.getSyncDeviceAssoPOPK()
+							.getDeviceId());
+			if (parLogicObjectFsu != null) {
+				try {
+					DeviceAssoTO deviceAsso =
+							new DeviceAssoTO(parLogicObjectFsu.getLogicObjectId(), logicObjectFsu.getLogicObjectId());
+					deviceAssoService.createDeviceAsso(deviceAsso);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
