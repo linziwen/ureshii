@@ -45,12 +45,16 @@ public:
 	void setSpherePos(const cv::Point3f val);
 
 	const C44Matrix getMatA() const;
+
+	const double getR0() const;
+	void setR0(const double r0) ;
 private:
 	vector<TPatchPntInfo> patchPnts;
 	PanoImage *img1Id;
 	PanoImage *img2Id;
 	C44Matrix matA;
 	cv::Point3f spherePos;
+	double r0;
 
 };
 
