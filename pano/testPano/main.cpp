@@ -66,15 +66,22 @@ int oldmain(){
 	int width=1000;
 	struct TPatchPntInfo pPatPtInfo[6]={
 		//TPatchPntInfo(1,2,1230,478,285,492),     //1   //这个不知为何加入了会死
-		TPatchPntInfo(1,2,247,504,1242,490),       //2
-		TPatchPntInfo(1,2,92,1003,1461,995),        //3
+		//TPatchPntInfo(1,2,247,504,1242,490),       //2
+		//TPatchPntInfo(1,2,92,1003,1461,995),        //3
 		//TPatchPntInfo(1,2,1359,1329,175,1331),    //4
-		TPatchPntInfo(1,2,227,1440,1271,1414),     //5
+		//TPatchPntInfo(1,2,227,1440,1271,1414),     //5
 		//TPatchPntInfo(2,1,1220,478,286,481),      //6
-		TPatchPntInfo(2,1,1390,736,108,740),        //7
-		TPatchPntInfo(2,1,1434,940,67,950),         //8
-		TPatchPntInfo(2,1,1331,1331,165,1358)  ,   //9
+		//TPatchPntInfo(2,1,1390,736,108,740),        //7
+		//TPatchPntInfo(2,1,1434,940,67,950),         //8
+		//TPatchPntInfo(2,1,1331,1331,165,1358)  ,   //9
 		//TPatchPntInfo(2,1,1407,1172,99,1185)        //10
+		TPatchPntInfo(1,2,244,1235,498,521),     //1   //这个不知为何加入了会死
+	    TPatchPntInfo(1,2,52,1421,1013,1003),       //2
+		TPatchPntInfo(1,2,273,1254,1462,1461),        //3
+		TPatchPntInfo(2,1,261,1275,536,504),    //4
+		TPatchPntInfo(2,1,101,1474,1004,996),     //5
+		TPatchPntInfo(2,1,232,1272,1442,1420),      //6
+
 	};
 
 	int ptNum=6;
