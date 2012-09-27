@@ -129,7 +129,7 @@ cv::Point3f Util::matXpoint(C44Matrix mat, cv::Point3f point){
 	pointMax.m_aData[2][0] = point.z;
 	pointMax.m_aData[3][0] = 1;
 	resultMax = mat*pointMax;
-	return cv::Point3f(resultMax[0][0], resultMax[1][0], resultMax[2][0]);
+	return cv::Point3f(resultMax.m_aData[0][0], resultMax.m_aData[1][0], resultMax.m_aData[2][0]);
 
 }
 
