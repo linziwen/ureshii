@@ -75,12 +75,12 @@ int oldmain(){
 		//TPatchPntInfo(2,1,1434,940,67,950),         //8
 		//TPatchPntInfo(2,1,1331,1331,165,1358)  ,   //9
 		//TPatchPntInfo(2,1,1407,1172,99,1185)        //10
-		TPatchPntInfo(1,2,244,1235,498,521),     //1   //这个不知为何加入了会死
-	    TPatchPntInfo(1,2,52,1421,1013,1003),       //2
-		TPatchPntInfo(1,2,273,1254,1462,1461),        //3
-		TPatchPntInfo(2,1,261,1275,536,504),    //4
-		TPatchPntInfo(2,1,101,1474,1004,996),     //5
-		TPatchPntInfo(2,1,232,1272,1442,1420),      //6
+		TPatchPntInfo(1,2,1416,122, 748, 765),     //1   //这个不知为何加入了会死
+	    TPatchPntInfo(1,2,1422,113,1188,1194),       //2
+		TPatchPntInfo(1,2,1299,239,1340,1334),        //3
+		TPatchPntInfo(2,1,1247,263,502,509),    //4
+		TPatchPntInfo(2,1,1451,81,998,1006),     //5
+		TPatchPntInfo(2,1,1269,248,1435,1445),      //6
 
 	};
 

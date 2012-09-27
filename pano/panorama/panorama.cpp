@@ -72,6 +72,16 @@ struct TPatchPntInfo * pPatPtInfo, //匹配点集
 		matB.m_aData[2][2]=cos(PI/2);
 		matB.m_aData[3][3] = 1;
 		matB.Uni();
+
+		C44Matrix matB2;
+		matB2.m_aData[0][0]=1;
+		matB2.m_aData[1][1]=cos(-PI/2);
+		matB2.m_aData[1][2]=-sin(-PI/2);
+		matB2.m_aData[2][1]=sin(-PI/2);
+		matB2.m_aData[2][2]=cos(-PI/2);
+		matB2.m_aData[3][3] = 1;
+		matB2.Uni();
+
 		cout<<"finished cal the matrix A and B"<<endl;
 
 		cv::Size outSize(nDestWidth, nDestWidth/2);
@@ -98,12 +108,15 @@ struct TPatchPntInfo * pPatPtInfo, //匹配点集
 				zp = sin(phi);
 
 				vector<CvPoint3D32f> points;
-				C44Matrix matXp,matX1,matRecB;
+				C44Matrix matXp,matX1,matRecB,matRecB2;
 				double dDet;
 
 				matRecB = matB;
+				matRecB2 = matB2;
 				dDet = matRecB.Rec();
+				dDet = matRecB2.Rec();
 				matRecB.Uni();
+				matRecB2.Uni();
 				if (dDet == 0)
 				{
 					LOG_INFO("matB can not be inversed");
@@ -112,6 +125,7 @@ struct TPatchPntInfo * pPatPtInfo, //匹配点集
 
 				//LOG_INFO("cal fisheye 3d pos respectively");
 				imgAssos[1].setSpherePos(Util::matXpoint(matRecB, cv::Point3f(xp, yp, zp)));
+				//imgAssos[2].setSpherePos(Util::matXpoint(matRecB2, cv::Point3f(xp, yp, zp)));
 				for(int k = 0; k < nPicNum - 1; ++k){
 					imgAssos[k+2].setSpherePos(Util::matXpoint(imgAssos[k+1].getMatA() , imgAssos[k+1].getSpherePos()));
 				}
@@ -132,7 +146,7 @@ struct TPatchPntInfo * pPatPtInfo, //匹配点集
 					rmax = imgAssos[k+1].getImg1Id()->getRadiu();
 					rsphere = rmax*180/183;
 					rmin = 2*rsphere - rmax;
-					if(r1 < rmin){
+					if(r1 < rmax){
 						double xi,yi;//image coord which the original point is in the center of the image
 						int xcv,ycv;//image coord which the original point is in the left top of the image
 						xi = r1*cos(theta1);
@@ -220,7 +234,7 @@ struct TPatchPntInfo * pPatPtInfo, //匹配点集
 			}
 		}
 		ss.str("");
-		ss << "rmax=" << rmax << "  rmin=" << rmin << " rspere=" << rsphere;
+		ss << "rmax=" << imgAssos[1].getImg1Id()->getRadiu() << "  rmin=" << rmin << " rspere=" << imgAssos[1].getR0();
 		LOG_INFO(ss.str());
 		cv::imwrite(sDestPic,outImg);
 		LOG_INFO("release phase");

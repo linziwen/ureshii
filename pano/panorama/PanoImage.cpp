@@ -9,7 +9,7 @@ using Pano::Logger;
 
 namespace Pano{
 PanoImage::PanoImage(string pathAndName,float radiu)
-	:radiu(radiu)
+	//:radiu(radiu)
 {
 	LOG_INFO("begin prepare image: " + pathAndName);
 	this->seperatePathAndName(pathAndName);
@@ -70,7 +70,8 @@ void PanoImage::resizeImgToSquare(){
 	cv::rectangle(result,bounding,cv::Scalar(0),2);
 
 	cv::Mat roi = this->getImage()(bounding);
-	int edge = this->getRadiu()*2;
+	float edge = bounding.width > bounding.height ? bounding.width : bounding.height;
+	this->setRadiu(edge/2);
 	ss.str("");
 	ss << "r=" << this->getRadiu();
 	LOG_INFO(ss.str());
